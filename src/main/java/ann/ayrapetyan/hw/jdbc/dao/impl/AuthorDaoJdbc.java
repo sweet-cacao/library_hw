@@ -25,10 +25,15 @@ public class AuthorDaoJdbc {
     }
 
     public Author getByNameAndSurname(String name, String surname) {
-        Map<String, Object> params = Map.of("name", name, "surname", surname);
-        return op.queryForObject(
-                "select id, name, surname from authors where name = :name and surname = :surname", params, new AuthorMapper()
-        );
+        try {
+            Map<String, Object> params = Map.of("name", name, "surname", surname);
+            return op.queryForObject(
+                    "select id, name, surname from authors where name = :name and surname = :surname", params, new AuthorMapper()
+            );
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
     private static class AuthorMapper implements RowMapper<Author> {

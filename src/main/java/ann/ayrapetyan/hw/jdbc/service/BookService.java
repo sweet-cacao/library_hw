@@ -28,12 +28,22 @@ public class BookService {
 
     @ShellMethod("get")
     public void get(@ShellOption final long id) {
-        System.out.println(bookDaoJdbc.getById(id));
+        Book book = bookDaoJdbc.getById(id);
+        if (book == null) {
+            System.out.println("No such book.");
+            return;
+        }
+        System.out.println(book);
     }
 
-    @ShellMethod("get")
-    public void get(@ShellOption final String name) {
-        System.out.println(bookDaoJdbc.getByName(name));
+    @ShellMethod("getbyname")
+    public void getByName(@ShellOption final String name) {
+        Book book = bookDaoJdbc.getByName(name);
+        if (book == null) {
+            System.out.println("No such book.");
+            return;
+        }
+        System.out.println(book);
     }
 
     @ShellMethod("create")

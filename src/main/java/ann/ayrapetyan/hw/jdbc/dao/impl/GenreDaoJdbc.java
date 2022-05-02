@@ -26,10 +26,15 @@ public class GenreDaoJdbc {
     }
 
     public Genre getByName(String name) {
-        Map<String, Object> params = Collections.singletonMap("name", name);
-        return op.queryForObject(
-                "select id, name from genres where name = :name", params, new GenreMapper()
-        );
+        try {
+            Map<String, Object> params = Collections.singletonMap("name", name);
+            return op.queryForObject(
+                    "select id, name from genres where name = :name", params, new GenreMapper()
+            );
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
     private static class GenreMapper implements RowMapper<Genre> {

@@ -21,21 +21,31 @@ public class BookDaoJdbc {
     }
 
     public Book getById(long id) {
-        Map<String, Object> params = Collections.singletonMap("id", id);
-        return op.queryForObject(
-                "select b.id, b.name, a.id author_id, a.name author_name, a.surname, g.id genre_id, g.name genre_name " +
-                        "from books b left join authors a on " +
-                        "b.author_id = a.id left join genres g on b.genre_id = g.id where b.id = :id", params, new BookMapper()
-        );
+        try {
+            Map<String, Object> params = Collections.singletonMap("id", id);
+            return op.queryForObject(
+                    "select b.id, b.name, a.id author_id, a.name author_name, a.surname, g.id genre_id, g.name genre_name " +
+                            "from books b left join authors a on " +
+                            "b.author_id = a.id left join genres g on b.genre_id = g.id where b.id = :id", params, new BookMapper()
+            );
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
     public Book getByName(String name) {
-        Map<String, Object> params = Collections.singletonMap("name", name);
-        return op.queryForObject(
-                "select b.id, b.name, a.id author_id, a.name author_name, a.surname, g.id genre_id, g.name genre_name " +
-                        "from books b left join authors a on " +
-                        "b.author_id = a.id left join genres g on b.genre_id = g.id where b.name = :name", params, new BookMapper()
-        );
+        try {
+            Map<String, Object> params = Collections.singletonMap("name", name);
+            return op.queryForObject(
+                    "select b.id, b.name, a.id author_id, a.name author_name, a.surname, g.id genre_id, g.name genre_name " +
+                            "from books b left join authors a on " +
+                            "b.author_id = a.id left join genres g on b.genre_id = g.id where b.name = :name", params, new BookMapper()
+            );
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
     public void insert(String name, Long genre, Long author) {
