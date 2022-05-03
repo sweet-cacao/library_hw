@@ -1,5 +1,6 @@
 package ann.ayrapetyan.hw.jdbc.dao.impl;
 
+import ann.ayrapetyan.hw.jdbc.dao.BookDao;
 import ann.ayrapetyan.hw.jdbc.domain.Author;
 import ann.ayrapetyan.hw.jdbc.domain.Book;
 import ann.ayrapetyan.hw.jdbc.domain.Genre;
@@ -13,7 +14,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @Repository
-public class BookDaoJdbc implements ann.ayrapetyan.hw.jdbc.dao.BookDao {
+public class BookDaoJdbc implements BookDao {
     private final NamedParameterJdbcOperations op;
 
     public BookDaoJdbc(NamedParameterJdbcOperations op) {

@@ -1,5 +1,6 @@
 package ann.ayrapetyan.hw.jdbc.dao.impl;
 
+import ann.ayrapetyan.hw.jdbc.dao.AuthorDao;
 import ann.ayrapetyan.hw.jdbc.domain.Author;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 @Repository
-public class AuthorDaoJdbc implements ann.ayrapetyan.hw.jdbc.dao.AuthorDao {
+public class AuthorDaoJdbc implements AuthorDao {
     private final NamedParameterJdbcOperations op;
 
     public AuthorDaoJdbc(NamedParameterJdbcOperations op) {

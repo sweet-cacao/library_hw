@@ -1,5 +1,8 @@
 package ann.ayrapetyan.hw.jdbc.service;
 
+import ann.ayrapetyan.hw.jdbc.dao.AuthorDao;
+import ann.ayrapetyan.hw.jdbc.dao.BookDao;
+import ann.ayrapetyan.hw.jdbc.dao.GenreDao;
 import ann.ayrapetyan.hw.jdbc.dao.impl.AuthorDaoJdbc;
 import ann.ayrapetyan.hw.jdbc.dao.impl.BookDaoJdbc;
 import ann.ayrapetyan.hw.jdbc.dao.impl.GenreDaoJdbc;
@@ -13,11 +16,11 @@ import org.springframework.shell.standard.ShellOption;
 import org.springframework.transaction.annotation.Transactional;
 
 @ShellComponent
-@Transactional
+//@Transactional
 public class BookService {
-    BookDaoJdbc bookDaoJdbc;
-    AuthorDaoJdbc authorDaoJdbc;
-    GenreDaoJdbc genreDaoJdbc;
+    BookDao bookDaoJdbc;
+    AuthorDao authorDaoJdbc;
+    GenreDao genreDaoJdbc;
 
     @Autowired
     public BookService(BookDaoJdbc bookDaoJdbc, AuthorDaoJdbc authorDaoJdbc, GenreDaoJdbc genreDaoJdbc) {
@@ -26,7 +29,7 @@ public class BookService {
         this.genreDaoJdbc = genreDaoJdbc;
     }
 
-    @ShellMethod("get")
+    @ShellMethod
     public Book get(@ShellOption final long id) {
         Book book = bookDaoJdbc.getById(id);
         if (book == null) {
@@ -37,7 +40,7 @@ public class BookService {
         return book;
     }
 
-    @ShellMethod("get-by-name")
+    @ShellMethod
     public Book getByName(@ShellOption final String name) {
         Book book = bookDaoJdbc.getByName(name);
         if (book == null) {
@@ -48,7 +51,7 @@ public class BookService {
         return book;
     }
 
-    @ShellMethod("create")
+    @ShellMethod
     public Book create(@ShellOption String bookName, @ShellOption String genre, @ShellOption String name, @ShellOption String surname) {
         Genre g = getGenre(genre);
         Author a = getAuthor(name, surname);
@@ -63,7 +66,7 @@ public class BookService {
         return book;
     }
 
-    @ShellMethod("update")
+    @ShellMethod
     public Book update(@ShellOption String bookName, @ShellOption String genre, @ShellOption String name, @ShellOption String surname) {
         Book book = bookDaoJdbc.getByName(bookName);
         if (book == null) {
@@ -80,7 +83,7 @@ public class BookService {
         return book;
     }
 
-    @ShellMethod("delete")
+    @ShellMethod
     public String delete(@ShellOption String bookName) {
         Book book = bookDaoJdbc.getByName(bookName);
         if (book == null) {

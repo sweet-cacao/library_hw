@@ -1,5 +1,6 @@
 package ann.ayrapetyan.hw.jdbc.dao.impl;
 
+import ann.ayrapetyan.hw.jdbc.dao.GenreDao;
 import ann.ayrapetyan.hw.jdbc.domain.Genre;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -11,7 +12,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @Repository
-public class GenreDaoJdbc implements ann.ayrapetyan.hw.jdbc.dao.GenreDao {
+public class GenreDaoJdbc implements GenreDao {
     private final NamedParameterJdbcOperations op;
 
     public GenreDaoJdbc(NamedParameterJdbcOperations op) {
