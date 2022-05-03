@@ -13,13 +13,14 @@ import java.util.Collections;
 import java.util.Map;
 
 @Repository
-public class BookDaoJdbc {
+public class BookDaoJdbc implements ann.ayrapetyan.hw.jdbc.dao.BookDao {
     private final NamedParameterJdbcOperations op;
 
     public BookDaoJdbc(NamedParameterJdbcOperations op) {
         this.op = op;
     }
 
+    @Override
     public Book getById(long id) {
         try {
             Map<String, Object> params = Collections.singletonMap("id", id);
@@ -34,6 +35,7 @@ public class BookDaoJdbc {
 
     }
 
+    @Override
     public Book getByName(String name) {
         try {
             Map<String, Object> params = Collections.singletonMap("name", name);
@@ -48,11 +50,13 @@ public class BookDaoJdbc {
 
     }
 
+    @Override
     public void insert(String name, Long genre, Long author) {
         op.update("insert into books (name, genre_id, author_id) values (:name, :genre, :author)",
                 Map.of("name", name, "genre", genre, "author", author));
     }
 
+    @Override
     public void deleteById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         op.update(
@@ -60,6 +64,7 @@ public class BookDaoJdbc {
         );
     }
 
+    @Override
     public void update(Long id, Long genre, Long author) {
         op.update("update books set (genre_id, author_id) = (:genre, :author) where id = :id", Map.of("id", id, "genre", genre, "author", author));
     }

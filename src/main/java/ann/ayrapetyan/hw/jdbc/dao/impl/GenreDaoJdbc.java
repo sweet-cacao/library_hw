@@ -1,7 +1,5 @@
 package ann.ayrapetyan.hw.jdbc.dao.impl;
 
-import ann.ayrapetyan.hw.jdbc.domain.Author;
-import ann.ayrapetyan.hw.jdbc.domain.Book;
 import ann.ayrapetyan.hw.jdbc.domain.Genre;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -13,18 +11,20 @@ import java.util.Collections;
 import java.util.Map;
 
 @Repository
-public class GenreDaoJdbc {
+public class GenreDaoJdbc implements ann.ayrapetyan.hw.jdbc.dao.GenreDao {
     private final NamedParameterJdbcOperations op;
 
     public GenreDaoJdbc(NamedParameterJdbcOperations op) {
         this.op = op;
     }
 
+    @Override
     public void insert(String genre) {
         op.update("insert into genres (name) values (:name)",
                 Map.of("name", genre));
     }
 
+    @Override
     public Genre getByName(String name) {
         try {
             Map<String, Object> params = Collections.singletonMap("name", name);

@@ -1,29 +1,29 @@
 package ann.ayrapetyan.hw.jdbc.dao.impl;
 
 import ann.ayrapetyan.hw.jdbc.domain.Author;
-import ann.ayrapetyan.hw.jdbc.domain.Genre;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.Map;
 
 @Repository
-public class AuthorDaoJdbc {
+public class AuthorDaoJdbc implements ann.ayrapetyan.hw.jdbc.dao.AuthorDao {
     private final NamedParameterJdbcOperations op;
 
     public AuthorDaoJdbc(NamedParameterJdbcOperations op) {
         this.op = op;
     }
 
+    @Override
     public void insert(String name, String surname) {
         op.update("insert into authors (name, surname) values (:name, :surname)",
                 Map.of("name", name, "surname", surname));
     }
 
+    @Override
     public Author getByNameAndSurname(String name, String surname) {
         try {
             Map<String, Object> params = Map.of("name", name, "surname", surname);
