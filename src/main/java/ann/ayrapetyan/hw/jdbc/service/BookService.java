@@ -1,34 +1,32 @@
 package ann.ayrapetyan.hw.jdbc.service;
 
-import ann.ayrapetyan.hw.jdbc.dao.impl.AuthorDaoJdbc;
-import ann.ayrapetyan.hw.jdbc.dao.impl.BookDaoJdbc;
-import ann.ayrapetyan.hw.jdbc.dao.impl.GenreDaoJdbc;
 import ann.ayrapetyan.hw.jdbc.domain.Author;
 import ann.ayrapetyan.hw.jdbc.domain.Book;
 import ann.ayrapetyan.hw.jdbc.domain.Genre;
-import org.springframework.beans.factory.annotation.Autowired;
+import ann.ayrapetyan.hw.jdbc.jpa.impl.AuthorRepositoryJpa;
+import ann.ayrapetyan.hw.jdbc.jpa.impl.BookCommentRepositoryJpa;
+import ann.ayrapetyan.hw.jdbc.jpa.impl.BookRepositoryJpa;
+import ann.ayrapetyan.hw.jdbc.jpa.impl.GenreRepositoryJpa;
+import lombok.AllArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
+
+
+@AllArgsConstructor
 @ShellComponent
 @Transactional
 public class BookService {
-    BookDaoJdbc bookDaoJdbc;
-    AuthorDaoJdbc authorDaoJdbc;
-    GenreDaoJdbc genreDaoJdbc;
-
-    @Autowired
-    public BookService(BookDaoJdbc bookDaoJdbc, AuthorDaoJdbc authorDaoJdbc, GenreDaoJdbc genreDaoJdbc) {
-        this.bookDaoJdbc = bookDaoJdbc;
-        this.authorDaoJdbc = authorDaoJdbc;
-        this.genreDaoJdbc = genreDaoJdbc;
-    }
+    private final BookRepositoryJpa bookDaoJdbc;
+    private final AuthorRepositoryJpa authorDaoJdbc;
+    private final GenreRepositoryJpa genreDaoJdbc;
+    private final BookCommentRepositoryJpa bookCommentRepositoryJpa;
 
     @ShellMethod("get")
     public Book get(@ShellOption final long id) {
-        Book book = bookDaoJdbc.getById(id);
+        Book book = bookDaoJdbc.findById(id).orElse(null);
         if (book == null) {
             System.out.println("No such book.");
             return null;
@@ -39,7 +37,7 @@ public class BookService {
 
     @ShellMethod("get-by-name")
     public Book getByName(@ShellOption final String name) {
-        Book book = bookDaoJdbc.getByName(name);
+        Book book = bookDaoJdbc.findByName(name);
         if (book == null) {
             System.out.println("No such book.");
             return null;
@@ -52,28 +50,31 @@ public class BookService {
     public Book create(@ShellOption String bookName, @ShellOption String genre, @ShellOption String name, @ShellOption String surname) {
         Genre g = getGenre(genre);
         Author a = getAuthor(name, surname);
-        Book book = bookDaoJdbc.getByName(bookName);
+        Book book = bookDaoJdbc.findByName(bookName);
         if (book != null) {
             System.out.println("Book already exists.");
             return null;
         }
-        bookDaoJdbc.insert(bookName, g.getId(), a.getId());
-        book = bookDaoJdbc.getByName(bookName);
+        book = new Book();
+        book.setName(bookName);
+        book.setAuthor(a);
+        book.setGenre(g);
+        book = bookDaoJdbc.save(book);
         System.out.println(book);
         return book;
     }
+//    update-name "Jane Air" m
 
     @ShellMethod("update")
-    public Book update(@ShellOption String bookName, @ShellOption String genre, @ShellOption String name, @ShellOption String surname) {
-        Book book = bookDaoJdbc.getByName(bookName);
+    public Book updateName(@ShellOption String bookName, @ShellOption String newBookName) {
+        Book book = bookDaoJdbc.findByName(bookName);
         if (book == null) {
             System.out.println("No such book.");
             return null;
         } else {
-            Genre g = getGenre(genre);
-            Author a = getAuthor(name, surname);
-            bookDaoJdbc.update(book.getId(), g.getId(), a.getId());
-            book = bookDaoJdbc.getById(book.getId());
+            book.setName(newBookName);
+            bookDaoJdbc.save(book);
+            book = bookDaoJdbc.findById(book.getId()).orElse(null);
         }
         System.out.println("Book updated");
         System.out.println(book);
@@ -82,7 +83,7 @@ public class BookService {
 
     @ShellMethod("delete")
     public String delete(@ShellOption String bookName) {
-        Book book = bookDaoJdbc.getByName(bookName);
+        Book book = bookDaoJdbc.findByName(bookName);
         if (book == null) {
             System.out.println("No such book.");
             return "No such book.";
@@ -93,19 +94,22 @@ public class BookService {
     }
 
     private Author getAuthor(@ShellOption String name, @ShellOption String surname) {
-        Author a = authorDaoJdbc.getByNameAndSurname(name, surname);
+        Author a = authorDaoJdbc.findByName(name, surname);
         if (a == null) {
-            authorDaoJdbc.insert(name, surname);
-            a = authorDaoJdbc.getByNameAndSurname(name, surname);
+            a = new Author();
+            a.setName(name);
+            a.setSurname(surname);
+            a = authorDaoJdbc.save(a);
         }
         return a;
     }
 
     private Genre getGenre(@ShellOption String genre) {
-        Genre g = genreDaoJdbc.getByName(genre);
+        Genre g = genreDaoJdbc.findByName(genre);
         if (g == null) {
-            genreDaoJdbc.insert(genre);
-            g = genreDaoJdbc.getByName(genre);
+            g = new Genre();
+            g.setName(genre);
+            g = genreDaoJdbc.save(g);
         }
         return g;
     }

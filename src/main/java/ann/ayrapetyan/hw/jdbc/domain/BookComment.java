@@ -3,7 +3,6 @@ package ann.ayrapetyan.hw.jdbc.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
@@ -11,12 +10,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name="genres")
-public class Genre {
+@Table(name="comments")
+public class BookComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    @Column(name = "comment", nullable = false)
+    private String comment;
 }
