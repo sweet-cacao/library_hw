@@ -27,35 +27,69 @@ public class BookService {
     }
 
     @ShellMethod("get")
-    public void get(@ShellOption final long id) {
+    public Book get(@ShellOption final long id) {
         Book book = bookDaoJdbc.getById(id);
         if (book == null) {
             System.out.println("No such book.");
-            return;
+            return null;
         }
         System.out.println(book);
+        return book;
     }
 
-    @ShellMethod("getbyname")
-    public void getByName(@ShellOption final String name) {
+    @ShellMethod("get-by-name")
+    public Book getByName(@ShellOption final String name) {
         Book book = bookDaoJdbc.getByName(name);
         if (book == null) {
             System.out.println("No such book.");
-            return;
+            return null;
         }
         System.out.println(book);
+        return book;
     }
 
     @ShellMethod("create")
-    public void create(@ShellOption String bookName, @ShellOption String genre, @ShellOption String name, @ShellOption String surname) {
+    public Book create(@ShellOption String bookName, @ShellOption String genre, @ShellOption String name, @ShellOption String surname) {
         Genre g = getGenre(genre);
         Author a = getAuthor(name, surname);
         Book book = bookDaoJdbc.getByName(bookName);
-        if (book == null) {
-            bookDaoJdbc.insert(bookName, g.getId(), a.getId());
-            book = bookDaoJdbc.getByName(bookName);
+        if (book != null) {
+            System.out.println("Book already exists.");
+            return null;
         }
+        bookDaoJdbc.insert(bookName, g.getId(), a.getId());
+        book = bookDaoJdbc.getByName(bookName);
         System.out.println(book);
+        return book;
+    }
+
+    @ShellMethod("update")
+    public Book update(@ShellOption String bookName, @ShellOption String genre, @ShellOption String name, @ShellOption String surname) {
+        Book book = bookDaoJdbc.getByName(bookName);
+        if (book == null) {
+            System.out.println("No such book.");
+            return null;
+        } else {
+            Genre g = getGenre(genre);
+            Author a = getAuthor(name, surname);
+            bookDaoJdbc.update(book.getId(), g.getId(), a.getId());
+            book = bookDaoJdbc.getById(book.getId());
+        }
+        System.out.println("Book updated");
+        System.out.println(book);
+        return book;
+    }
+
+    @ShellMethod("delete")
+    public String delete(@ShellOption String bookName) {
+        Book book = bookDaoJdbc.getByName(bookName);
+        if (book == null) {
+            System.out.println("No such book.");
+            return "No such book.";
+        }
+        bookDaoJdbc.deleteById(book.getId());
+        System.out.println("Book deleted");
+        return "Book deleted";
     }
 
     private Author getAuthor(@ShellOption String name, @ShellOption String surname) {
@@ -74,33 +108,6 @@ public class BookService {
             g = genreDaoJdbc.getByName(genre);
         }
         return g;
-    }
-
-    @ShellMethod("update")
-    public void update(@ShellOption String bookName, @ShellOption String genre, @ShellOption String name, @ShellOption String surname) {
-        Book book = bookDaoJdbc.getByName(bookName);
-        if (book == null) {
-            System.out.println("No such book.");
-            return;
-        } else {
-            Genre g = getGenre(genre);
-            Author a = getAuthor(name, surname);
-            bookDaoJdbc.update(book.getId(), g.getId(), a.getId());
-            book = bookDaoJdbc.getById(book.getId());
-        }
-        System.out.println("Book updated");
-        System.out.println(book);
-    }
-
-    @ShellMethod("delete")
-    public void delete(@ShellOption String bookName) {
-        Book book = bookDaoJdbc.getByName(bookName);
-        if (book == null) {
-            System.out.println("No such book.");
-            return;
-        }
-        bookDaoJdbc.deleteById(book.getId());
-        System.out.println("Book deleted");
     }
 
 }
