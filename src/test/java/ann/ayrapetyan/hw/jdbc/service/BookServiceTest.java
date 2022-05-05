@@ -2,6 +2,7 @@ package ann.ayrapetyan.hw.jdbc.service;
 
 import ann.ayrapetyan.hw.jdbc.domain.Author;
 import ann.ayrapetyan.hw.jdbc.domain.Book;
+import ann.ayrapetyan.hw.jdbc.domain.BookComment;
 import ann.ayrapetyan.hw.jdbc.domain.Genre;
 import ann.ayrapetyan.hw.jdbc.jpa.impl.AuthorRepositoryJpa;
 import ann.ayrapetyan.hw.jdbc.jpa.impl.BookCommentRepositoryJpa;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -41,7 +43,7 @@ class BookServiceTest {
 
     @Test
     void get() {
-        Book book = new Book(1, "Jane Air", new Genre(1, "Romantic"), new Author(2, "Charlotta", "Bronte"), new ArrayList<>());
+        Book book = new Book(1, "Jane Air", new Genre(1, "Romantic"), new Author(2, "Charlotta", "Bronte"), List.of(new BookComment(1, "nice book"), new BookComment(2, "good book"), new BookComment(3, "best book")));
         assertEquals(book, service.get(1));
     }
 
@@ -52,7 +54,7 @@ class BookServiceTest {
 
     @Test
     void getByName() {
-        Book book = new Book(1, "Jane Air", new Genre(1, "Romantic"), new Author(2, "Charlotta", "Bronte"), new ArrayList<>());
+        Book book = new Book(1, "Jane Air", new Genre(1, "Romantic"), new Author(2, "Charlotta", "Bronte"), List.of(new BookComment(1, "nice book"), new BookComment(2, "good book"), new BookComment(3, "best book")));
         assertEquals(book, service.getByName("Jane Air"));
     }
 
@@ -64,14 +66,14 @@ class BookServiceTest {
     @Test
     @Rollback
     void create() {
-        Book book = new Book(2, "Romeo and Juliet", new Genre(4, "Novel"), new Author(4, "William", "Shakespeare"), new ArrayList<>());
+        Book book = new Book(3, "Romeo and Juliet", new Genre(4, "Novel"), new Author(4, "William", "Shakespeare"), new ArrayList<>());
         assertEquals(book, service.create(book.getName(), "Novel", "William", "Shakespeare"));
     }
 
     @Test
     @Rollback
     void update() {
-        Book book = new Book(1, "Jane m", new Genre(1, "Romantic"), new Author(2, "Charlotta", "Bronte"), new ArrayList<>());
+        Book book = new Book(1, "Jane m", new Genre(1, "Romantic"), new Author(2, "Charlotta", "Bronte"), List.of(new BookComment(1, "nice book"), new BookComment(2, "good book"), new BookComment(3, "best book")));
         assertEquals(book, service.updateName("Jane Air", "Jane m"));
     }
 

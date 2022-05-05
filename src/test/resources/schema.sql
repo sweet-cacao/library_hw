@@ -1,3 +1,5 @@
+drop all objects;
+
 create table genres(
     id bigint auto_increment,
     name varchar(255),
