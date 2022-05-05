@@ -48,8 +48,8 @@ public class BookRepositoryJpa implements BookRepository {
 
     @Override
     public List<Book> findAll() {
-        EntityGraph<?> entityGraph = em.getEntityGraph("otus-book-avatars-entity-graph");
-        TypedQuery<Book> query = em.createQuery("select s from Book s join fetch s.comments", Book.class);
+        EntityGraph<?> entityGraph = em.getEntityGraph("books-entity-graph");
+        TypedQuery<Book> query = em.createQuery("select s from Book s left join fetch s.comments comm", Book.class);
         query.setHint("javax.persistence.fetchgraph", entityGraph);
         return query.getResultList();
     }

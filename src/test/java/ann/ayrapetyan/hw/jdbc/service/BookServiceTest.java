@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.ArrayList;
@@ -70,7 +69,7 @@ class BookServiceTest {
     }
 
     @Test
-//    @Rollback
+    @Rollback
     void update() {
         Book book = new Book(1, "Jane m", new Genre(1, "Romantic"), new Author(2, "Charlotta", "Bronte"), new ArrayList<>());
         assertEquals(book, service.updateName("Jane Air", "Jane m"));

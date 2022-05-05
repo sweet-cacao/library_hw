@@ -13,6 +13,7 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -79,6 +80,12 @@ public class BookService {
         System.out.println("Book updated");
         System.out.println(book);
         return book;
+    }
+
+    @ShellMethod("getAll")
+    public void getAll(){
+        List<Book> books =  bookDaoJdbc.findAll();
+        books.forEach(System.out::println);
     }
 
     @ShellMethod("delete")
