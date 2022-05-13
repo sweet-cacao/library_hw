@@ -8,25 +8,23 @@ import ann.ayrapetyan.hw.jdbc.jpa.impl.BookCommentRepositoryJpa;
 import ann.ayrapetyan.hw.jdbc.jpa.impl.BookRepositoryJpa;
 import ann.ayrapetyan.hw.jdbc.jpa.impl.GenreRepositoryJpa;
 import lombok.AllArgsConstructor;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 
 @AllArgsConstructor
-@ShellComponent
-@Transactional
+@Service
 public class BookService {
     private final BookRepositoryJpa bookDaoJdbc;
     private final AuthorRepositoryJpa authorDaoJdbc;
     private final GenreRepositoryJpa genreDaoJdbc;
     private final BookCommentRepositoryJpa bookCommentRepositoryJpa;
 
-    @ShellMethod("get")
-    public Book get(@ShellOption final long id) {
+    @Transactional
+    public Book get(final long id) {
         Book book = bookDaoJdbc.findById(id).orElse(null);
         if (book == null) {
             System.out.println("No such book.");
@@ -36,8 +34,8 @@ public class BookService {
         return book;
     }
 
-    @ShellMethod("get-by-name")
-    public Book getByName(@ShellOption final String name) {
+    @Transactional
+    public Book getByName(final String name) {
         Book book = bookDaoJdbc.findByName(name);
         if (book == null) {
             System.out.println("No such book.");
@@ -47,7 +45,7 @@ public class BookService {
         return book;
     }
 
-    @ShellMethod("create")
+    @Transactional
     public Book create(@ShellOption String bookName, @ShellOption String genre, @ShellOption String name, @ShellOption String surname) {
         Genre g = getGenre(genre);
         Author a = getAuthor(name, surname);
@@ -64,10 +62,9 @@ public class BookService {
         System.out.println(book);
         return book;
     }
-//    update-name "Jane Air" m
 
-    @ShellMethod("update")
-    public Book updateName(@ShellOption String bookName, @ShellOption String newBookName) {
+    @Transactional
+    public Book updateName(String bookName, String newBookName) {
         Book book = bookDaoJdbc.findByName(bookName);
         if (book == null) {
             System.out.println("No such book.");
@@ -82,14 +79,19 @@ public class BookService {
         return book;
     }
 
-    @ShellMethod("getAll")
-    public void getAll(){
+    @Transactional
+    public void getAll() {
         List<Book> books =  bookDaoJdbc.findAll();
         books.forEach(System.out::println);
     }
 
-    @ShellMethod("delete")
-    public String delete(@ShellOption String bookName) {
+    @Transactional
+    public void getAllComments(String bookName) {
+        bookDaoJdbc.findByName(bookName).getComments().forEach(System.out::println);
+    }
+
+    @Transactional
+    public String delete(String bookName) {
         Book book = bookDaoJdbc.findByName(bookName);
         if (book == null) {
             System.out.println("No such book.");
@@ -100,7 +102,7 @@ public class BookService {
         return "Book deleted";
     }
 
-    private Author getAuthor(@ShellOption String name, @ShellOption String surname) {
+    private Author getAuthor(String name, String surname) {
         Author a = authorDaoJdbc.findByName(name, surname);
         if (a == null) {
             a = new Author();
@@ -111,7 +113,7 @@ public class BookService {
         return a;
     }
 
-    private Genre getGenre(@ShellOption String genre) {
+    private Genre getGenre(String genre) {
         Genre g = genreDaoJdbc.findByName(genre);
         if (g == null) {
             g = new Genre();

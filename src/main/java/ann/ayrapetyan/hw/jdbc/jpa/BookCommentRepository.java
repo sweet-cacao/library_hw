@@ -9,7 +9,5 @@ public interface BookCommentRepository {
 
     Optional<BookComment> findById(long id);
 
-    void updateNameById(long id, String comment);
-
     void deleteById(long id);
 }

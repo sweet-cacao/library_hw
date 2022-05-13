@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.Optional;
 
 @Repository
@@ -34,21 +33,7 @@ public class BookCommentRepositoryJpa implements BookCommentRepository {
     }
 
     @Override
-    public void updateNameById(long id, String comment) {
-        Query query = em.createQuery("update BookComment s " +
-                "set s.comment = :comment " +
-                "where s.id = :id");
-        query.setParameter("comment", comment);
-        query.setParameter("id", id);
-        query.executeUpdate();
-    }
-
-    @Override
     public void deleteById(long id) {
-        Query query = em.createQuery("delete " +
-                "from BookComment s " +
-                "where s.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        em.remove(em.find(BookComment.class, id));
     }
 }
