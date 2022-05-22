@@ -3,34 +3,31 @@ package ann.ayrapetyan.hw.jdbc.service;
 import ann.ayrapetyan.hw.jdbc.domain.Author;
 import ann.ayrapetyan.hw.jdbc.domain.Book;
 import ann.ayrapetyan.hw.jdbc.domain.Genre;
-import ann.ayrapetyan.hw.jdbc.jpa.impl.AuthorRepositoryJpa;
-import ann.ayrapetyan.hw.jdbc.jpa.impl.BookCommentRepositoryJpa;
-import ann.ayrapetyan.hw.jdbc.jpa.impl.BookRepositoryJpa;
-import ann.ayrapetyan.hw.jdbc.jpa.impl.GenreRepositoryJpa;
+import ann.ayrapetyan.hw.jdbc.jpa.AuthorRepository;
+import ann.ayrapetyan.hw.jdbc.jpa.BookCommentRepository;
+import ann.ayrapetyan.hw.jdbc.jpa.BookRepository;
+import ann.ayrapetyan.hw.jdbc.jpa.GenreRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.shell.standard.ShellOption;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 
 @AllArgsConstructor
 @Service
 public class BookService {
-    private final BookRepositoryJpa bookDaoJdbc;
-    private final AuthorRepositoryJpa authorDaoJdbc;
-    private final GenreRepositoryJpa genreDaoJdbc;
-    private final BookCommentRepositoryJpa bookCommentRepositoryJpa;
+    private final BookRepository bookDaoJdbc;
+    private final AuthorRepository authorDaoJdbc;
+    private final GenreRepository genreDaoJdbc;
 
     @Transactional
-    public Book get(final long id) {
+    public Book get(long id) {
         Book book = bookDaoJdbc.findById(id).orElse(null);
         if (book == null) {
             System.out.println("No such book.");
             return null;
         }
-        System.out.println(book);
         return book;
     }
 
@@ -41,12 +38,11 @@ public class BookService {
             System.out.println("No such book.");
             return null;
         }
-        System.out.println(book);
         return book;
     }
 
     @Transactional
-    public Book create(@ShellOption String bookName, @ShellOption String genre, @ShellOption String name, @ShellOption String surname) {
+    public Book create(String bookName, String genre, String name, String surname) {
         Genre g = getGenre(genre);
         Author a = getAuthor(name, surname);
         Book book = bookDaoJdbc.findByName(bookName);
@@ -81,8 +77,7 @@ public class BookService {
 
     @Transactional
     public void getAll() {
-        List<Book> books =  bookDaoJdbc.findAll();
-        books.forEach(System.out::println);
+        bookDaoJdbc.findAll().forEach(System.out::println);
     }
 
     @Transactional
@@ -103,7 +98,7 @@ public class BookService {
     }
 
     private Author getAuthor(String name, String surname) {
-        Author a = authorDaoJdbc.findByName(name, surname);
+        Author a = authorDaoJdbc.findByNameAndSurname(name, surname);
         if (a == null) {
             a = new Author();
             a.setName(name);

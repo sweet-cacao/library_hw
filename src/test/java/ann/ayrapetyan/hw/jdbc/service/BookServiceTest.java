@@ -4,16 +4,18 @@ import ann.ayrapetyan.hw.jdbc.domain.Author;
 import ann.ayrapetyan.hw.jdbc.domain.Book;
 import ann.ayrapetyan.hw.jdbc.domain.BookComment;
 import ann.ayrapetyan.hw.jdbc.domain.Genre;
-import ann.ayrapetyan.hw.jdbc.jpa.impl.AuthorRepositoryJpa;
-import ann.ayrapetyan.hw.jdbc.jpa.impl.BookCommentRepositoryJpa;
-import ann.ayrapetyan.hw.jdbc.jpa.impl.BookRepositoryJpa;
-import ann.ayrapetyan.hw.jdbc.jpa.impl.GenreRepositoryJpa;
+import ann.ayrapetyan.hw.jdbc.jpa.AuthorRepository;
+import ann.ayrapetyan.hw.jdbc.jpa.BookCommentRepository;
+import ann.ayrapetyan.hw.jdbc.jpa.BookRepository;
+import ann.ayrapetyan.hw.jdbc.jpa.GenreRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,23 +24,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DataJpaTest
-@Import({AuthorRepositoryJpa.class, BookRepositoryJpa.class, GenreRepositoryJpa.class, BookCommentRepositoryJpa.class})
+@ContextConfiguration
 class BookServiceTest {
 
     BookService service;
 
     @Autowired
-    BookRepositoryJpa bookRepository;
+    BookRepository bookRepository;
     @Autowired
-    AuthorRepositoryJpa authorRepositoryJpa;
+    AuthorRepository authorRepositoryJpa;
     @Autowired
-    GenreRepositoryJpa genreRepositoryJpa;
+    GenreRepository genreRepositoryJpa;
     @Autowired
-    BookCommentRepositoryJpa bookComment;
+    BookCommentRepository bookComment;
+
 
     @BeforeEach
     public void init() {
-        service = new BookService(bookRepository, authorRepositoryJpa, genreRepositoryJpa, bookComment);
+        service = new BookService(bookRepository, authorRepositoryJpa, genreRepositoryJpa);
     }
 
     @Test

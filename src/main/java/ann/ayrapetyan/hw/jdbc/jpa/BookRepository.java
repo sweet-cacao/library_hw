@@ -1,18 +1,9 @@
 package ann.ayrapetyan.hw.jdbc.jpa;
 
 import ann.ayrapetyan.hw.jdbc.domain.Book;
+import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface BookRepository {
-    Book save(Book student);
-
-    Optional<Book> findById(long id);
-
+public interface BookRepository extends CrudRepository<Book, Long> {
     Book findByName(String name);
-
-    List<Book> findAll();
-
-    void deleteById(long id);
+    void deleteById(Long id);
 }

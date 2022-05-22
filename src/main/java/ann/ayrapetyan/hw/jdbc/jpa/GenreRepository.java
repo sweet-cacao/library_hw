@@ -1,13 +1,8 @@
 package ann.ayrapetyan.hw.jdbc.jpa;
 
 import ann.ayrapetyan.hw.jdbc.domain.Genre;
+import org.springframework.data.repository.CrudRepository;
 
-import java.util.Optional;
-
-public interface GenreRepository {
-    Genre save(Genre genre);
-
-    Optional<Genre> findById(long id);
-
-    Genre findByName(String name);
+public interface GenreRepository extends CrudRepository<Genre, Long> {
+    public Genre findByName(String name);
 }

@@ -1,13 +1,7 @@
 package ann.ayrapetyan.hw.jdbc.jpa;
 
 import ann.ayrapetyan.hw.jdbc.domain.BookComment;
+import org.springframework.data.repository.CrudRepository;
 
-import java.util.Optional;
-
-public interface BookCommentRepository {
-    BookComment save(BookComment comment);
-
-    Optional<BookComment> findById(long id);
-
-    void deleteById(long id);
+public interface BookCommentRepository extends CrudRepository<BookComment, Long> {
 }
