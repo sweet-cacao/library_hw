@@ -4,14 +4,10 @@ import ann.ayrapetyan.hw.jdbc.domain.Author;
 import ann.ayrapetyan.hw.jdbc.domain.Book;
 import ann.ayrapetyan.hw.jdbc.domain.Genre;
 import ann.ayrapetyan.hw.jdbc.jpa.AuthorRepository;
-import ann.ayrapetyan.hw.jdbc.jpa.BookCommentRepository;
 import ann.ayrapetyan.hw.jdbc.jpa.BookRepository;
 import ann.ayrapetyan.hw.jdbc.jpa.GenreRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.shell.standard.ShellOption;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 
 
 @AllArgsConstructor
@@ -21,7 +17,6 @@ public class BookService {
     private final AuthorRepository authorDaoJdbc;
     private final GenreRepository genreDaoJdbc;
 
-    @Transactional
     public Book get(long id) {
         Book book = bookDaoJdbc.findById(id).orElse(null);
         if (book == null) {
@@ -31,7 +26,6 @@ public class BookService {
         return book;
     }
 
-    @Transactional
     public Book getByName(final String name) {
         Book book = bookDaoJdbc.findByName(name);
         if (book == null) {
@@ -41,7 +35,6 @@ public class BookService {
         return book;
     }
 
-    @Transactional
     public Book create(String bookName, String genre, String name, String surname) {
         Genre g = getGenre(genre);
         Author a = getAuthor(name, surname);
@@ -59,7 +52,6 @@ public class BookService {
         return book;
     }
 
-    @Transactional
     public Book updateName(String bookName, String newBookName) {
         Book book = bookDaoJdbc.findByName(bookName);
         if (book == null) {
@@ -75,17 +67,14 @@ public class BookService {
         return book;
     }
 
-    @Transactional
     public void getAll() {
         bookDaoJdbc.findAll().forEach(System.out::println);
     }
 
-    @Transactional
     public void getAllComments(String bookName) {
         bookDaoJdbc.findByName(bookName).getComments().forEach(System.out::println);
     }
 
-    @Transactional
     public String delete(String bookName) {
         Book book = bookDaoJdbc.findByName(bookName);
         if (book == null) {

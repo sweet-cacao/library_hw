@@ -3,20 +3,17 @@ package ann.ayrapetyan.hw.jdbc.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity
-@Table(name = "authors")
+@Document("authors")
 public class Author {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "surname", nullable = false)
     private String surname;
 }

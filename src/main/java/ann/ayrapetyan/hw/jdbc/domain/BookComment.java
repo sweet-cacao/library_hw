@@ -3,19 +3,15 @@ package ann.ayrapetyan.hw.jdbc.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
-@Entity
-@Table(name="comments")
+@Document("comments")
 public class BookComment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Column(name = "comment", nullable = false)
     private String comment;
 }
