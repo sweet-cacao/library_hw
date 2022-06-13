@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit person</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Person edition -->
+<form id="edit-form" action="create.html" th:method="post" th:action="@{/create}" th:object="${book}">
+    <h3>Book Info:</h3>
+
+    <div class="row">
+        <label for="book-name-input">Book name:</label>
+        <input id="book-name-input" name="name" type="text" value="John Doe" th:value="*{name}"/>
+    </div>
+
+    <div class="row">
+        <label for="author-name-input">Author name:</label>
+        <input id="author-name-input" name="authorName" type="text" value="John Doe" th:value="*{authorName}"/>
+    </div>
+
+    <div class="row">
+        <label for="author-surname-input">Author surname:</label>
+        <input id="author-surname-input" name="authorSurname" type="text" value="John Doe" th:value="*{authorSurname}"/>
+    </div>
+
+    <div class="row">
+        <label for="genre-name-input">Genre name:</label>
+        <input id="genre-name-input" name="genreName" type="text" value="John Doe" th:value="*{genreName}"/>
+    </div>
+
+    <div class="row">
+        <label for="comments-input">Comments</label>
+        <input id="comments-input" name="comments" type="text" value="John Doe" th:value="*{comments}"/>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+        <a href="list.html" th:href="@{/}"><button type="button">Cancel</button></a>
+    </div>
+</form>
+
+</body>
+</html>
