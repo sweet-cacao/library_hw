@@ -96,7 +96,7 @@ class BookServiceTest {
     @Rollback
     void create() {
         Book book = new Book(4L, "Romeo and Juliet", new Genre(4, "Novel"), new Author(4, "William", "Shakespeare"), new ArrayList<>());
-        Book foundBook = service.create(book.getName(), "Novel", "William", "Shakespeare");
+        Book foundBook = service.create(book.getName(), "Novel", "William", "Shakespeare", "");
         assertEquals(book.getName(), foundBook.getName());
         assertEquals(book.getAuthor().getName(), foundBook.getAuthor().getName());
         assertEquals(book.getAuthor().getSurname(), foundBook.getAuthor().getSurname());

@@ -10,7 +10,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 public class JdbcApplication {
 
 	public static void main(String[] args) {
-		ApplicationContext ctx = SpringApplication.run(JdbcApplication.class, args);
+		SpringApplication.run(JdbcApplication.class, args);
 	}
+
 
 }
