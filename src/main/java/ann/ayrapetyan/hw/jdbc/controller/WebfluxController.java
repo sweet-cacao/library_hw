@@ -24,6 +24,6 @@ public class WebfluxController {
 
     @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
     public Flux<Book> getBooks() {
-        return service.findAll().delayElements(Duration.ofSeconds(2));
+        return service.findAll();
     }
 }
