@@ -2,6 +2,7 @@ package ann.ayrapetyan.hw.jdbc.domain;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -18,9 +19,10 @@ public class Book {
     @Generated
     private long id;
     private String name;
+    @DBRef
     private Genre genre;
+    @DBRef
     private Author author;
-
     public String getCommentsAsString() {
         StringBuilder commentString = new StringBuilder();
         for (BookComment c: comments) {
@@ -28,6 +30,6 @@ public class Book {
         }
         return commentString.toString();
     }
-
+    @DBRef
     private List<BookComment> comments = new ArrayList<>();
 }
