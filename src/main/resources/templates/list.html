@@ -20,8 +20,7 @@
                     }
                 });
             });
-            // $('#buttonAjaxList').click(function() {
-            //     // var bookId = $('#bookId').val();
+
 
                 $.ajax({
                     type: "GET",
@@ -33,19 +32,15 @@
                             $("#personst").append("<tr>" +
                                     "<td>" + val.id + "</td>" +
                                     "<td>" + val.name + "</td>" +
-                                    "<td>" + "hello" + "</td>" +
-                                    "<td>" + "hello" + "</td>" +
-                                    "<td>" + "hello" + "</td>" +
-                                    "<td>" + "hello" + "</td>" +
+                                    "<td>" + val.genre.name + "</td>" +
+                                    "<td>" + val.author.name + " " + val.author.surname + "</td>" +
+                                    "<td>" + val.getCommentsAsString + "</td>" +
+                                    "<td>" + "<a href=\"edit.html\" th:href=\"@{/edit(id=${"+ val.id +"})}\">Edit</a>" + "</td>" +
                                     "</tr>");
                             })
                         }
-                        // var s = 'Id: ' + result.id;
-                        // s += '<br/>Name: ' + result.name;
-                        // $("#result1").html(s);
 
                 });
-            // });
         });
     </script>
     <title>List of all books</title>
