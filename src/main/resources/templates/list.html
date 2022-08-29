@@ -2,6 +2,47 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
+    <script type="text/javascript" th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js}"></script>
+    <script  type="text/javascript">
+        $(document).ready(function() {
+            $('#buttonAjax').click(function() {
+                    var bookId = $('#bookId').val();
+
+                $.ajax({
+                    type: "GET",
+                    url: '/api/ajaxrest/getBook/' + bookId,
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function(result) {
+                        var s = 'Id: ' + result.id;
+                        s += '<br/>Name: ' + result.name;
+                        $("#result1").html(s);
+                    }
+                });
+            });
+
+
+                $.ajax({
+                    type: "GET",
+                    url: '/flux',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function(list) {
+                        $.each(list, function (i, val) {
+                            $("#personst").append("<tr>" +
+                                    "<td>" + val.id + "</td>" +
+                                    "<td>" + val.name + "</td>" +
+                                    "<td>" + val.genre.name + "</td>" +
+                                    "<td>" + val.author.name + " " + val.author.surname + "</td>" +
+                                    "<td>" + val.getCommentsAsString + "</td>" +
+                                    "<td>" + "<a href=\"edit.html\" th:href=\"@{/edit(id=${"+ val.id +"})}\">Edit</a>" + "</td>" +
+                                    "</tr>");
+                            })
+                        }
+
+                });
+        });
+    </script>
     <title>List of all books</title>
     <style type="text/css">
         body {
@@ -23,6 +64,8 @@
             width: 50px;
         }
     </style>
+
+
 </head>
 <body>
 <h3>Books:</h3>
@@ -38,24 +81,34 @@
         <th>Action</th>
     </tr>
     </thead>
-    <tbody>
-    <tr th:each="book : ${books}">
-        <td th:text="${book.id}">1</td>
-        <td th:text="${book.name}">Harry Potter</td>
-        <td th:text="${book.genre.name}">Adventure</td>
-        <td th:text="${book.author.name + ' ' + book.author.surname}">Joan Rowling</td>
-        <td th:text="${book.getCommentsAsString()}">nice book</td>
-        <td>
-            <a href="edit.html" th:href="@{/edit(id=${book.id})}">Edit</a>
-            <form action="#" th:action="@{'/books/delete/{id}'(id=${book.id})}" th:method="delete" >
-                <button type="submit" class="btn">
-                    Delete
-                </button>
-            </form>
-        </td>
-    </tr>
+    <tbody id = "personst">
+<!--    <tr th:each="book : ${books}">-->
+<!--        <td th:text="${book.id}">1</td>-->
+<!--        <td th:text="${book.name}">Harry Potter</td>-->
+<!--        <td th:text="${book.genre.name}">Adventure</td>-->
+<!--        <td th:text="${book.author.name + ' ' + book.author.surname}">Joan Rowling</td>-->
+<!--        <td th:text="${book.getCommentsAsString()}">nice book</td>-->
+<!--        <td>-->
+<!--            <a href="edit.html" th:href="@{/edit(id=${book.id})}">Edit</a>-->
+<!--            <form action="#" th:action="@{'/books/delete/{id}'(id=${book.id})}" th:method="delete" >-->
+<!--                <button type="submit" class="btn">-->
+<!--                    Delete-->
+<!--                </button>-->
+<!--            </form>-->
+<!--        </td>-->
+<!--    </tr>-->
     </tbody>
 </table>
+<fieldset>
+    <legend>AjaxBtn</legend>
+    Book id<input type="text" id="bookId"/>
+    <br/>
+    <input type="button" value="AjaxBtn" id="buttonAjax">
+    <br/>
+    <span id="result1"></span>
+</fieldset>
 <h3><a href="create.html" th:href="@{/create}">Create</a></h3>
+<tabBody>
+</tabBody>
 </body>
 </html>
